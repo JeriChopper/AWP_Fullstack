@@ -1,0 +1,15 @@
+Technology choices:
+Backend:
+    - Done with NodeJS, Express and implemented MongoDB database
+
+Frontend:
+    - Done with React. Reason being that implementing better visual components is easier with React frontend.
+
+
+Installation guidelines:
+
+User Manual:
+
+
+
+
