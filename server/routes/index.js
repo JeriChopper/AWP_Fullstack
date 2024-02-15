@@ -151,7 +151,7 @@ router.post('/login',
       res.cookie('connect.sid', token, { httpOnly: true });
 
 
-      res.json({token}); 
+      res.json({token, user: {email: user.email}}); 
     }
   );
 });

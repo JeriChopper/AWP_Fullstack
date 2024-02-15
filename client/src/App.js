@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Login from './components/Login';
 import './App.css';
@@ -15,11 +15,10 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <h2>{jwt ? `Welcome ${user.email}!`: ""} </h2>
+        <h2>{jwt ? `Your email: ${user.email}!`: ""} </h2>
 
       <Register/>
-
-      {!user?.id?.length > 0 &&
+      {!user.email?.length > 0 &&
         <Login setJwt={setJwt} setUser={setUser} jwt={jwt}/>
       }
       </div>
