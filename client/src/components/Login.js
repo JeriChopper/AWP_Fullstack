@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react'
+import {useState} from 'react'
 
-function Login() {
+function Login({setJwt, jwt, setUser}) {
     const [userData, setUserData] = useState({})
 
     const handleChange = (e) => {
@@ -22,6 +22,10 @@ function Login() {
             .then(response => response.json())
             .then(data=>{
                 console.log(data)
+                if(data.token) {
+                    setJwt(data.token)
+                    setUser(JSON.parse(Buffer.from(data.token.split(".")[1], "base64").toString()))
+                }
             })
     }
 

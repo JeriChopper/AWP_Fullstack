@@ -6,12 +6,18 @@ import Register from './components/Register';
 
 
 function App() {
+
+  const [jwt, setJwt] = useState("")
+  const [user, setUser] = useState({})
+
+
+
   return (
     <Router>
       <div className="App">
 
       <Register/>
-      <Login />
+      <Login setJwt={setJwt} setUser={setUser} jwt={jwt}/>
 
       </div>
     </Router>
