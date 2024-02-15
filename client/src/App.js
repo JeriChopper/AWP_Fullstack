@@ -15,7 +15,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <h2>{jwt ? `Welcome ${user.username}!`: ""} </h2>
+        <h2>{jwt ? `Welcome ${user.email}!`: ""} </h2>
 
       <Register/>
 
