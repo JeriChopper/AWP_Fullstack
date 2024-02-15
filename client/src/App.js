@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Login from './components/Login';
-import Register from './components/Register';
 import './App.css';
+import Register from './components/Register';
 
 
 function App() {
@@ -10,8 +10,7 @@ function App() {
     <Router>
       <div className="App">
 
-
-      <Register />
+      <Register/>
       <Login />
 
       </div>

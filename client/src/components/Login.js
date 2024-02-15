@@ -11,7 +11,7 @@ function Login() {
 
         e.preventDefault()
 
-        fetch("/login",{
+        fetch('/login',{
             method: "POST",
             headers: {
                 "Content-type": "application/json"
@@ -30,7 +30,7 @@ function Login() {
         <div>
             <h2>Login</h2>
             <form onChange={handleChange} onSubmit={submit}>
-                <input type="text" name="username"/>
+                <input type="text" name="email"/>
                 <input type="password" name="password"/>
                 <input type="submit"/>
             </form>

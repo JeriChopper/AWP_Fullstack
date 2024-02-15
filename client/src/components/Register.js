@@ -30,7 +30,7 @@ function Register() {
         <div>
             <h2>Register</h2>
             <form onChange={handleChange} onSubmit={submit}>
-                <input type="text" name="username"/>
+                <input type="text" name="email"/>
                 <input type="password" name="password"/>
                 <input type="submit"/>
             </form>
