@@ -24,7 +24,7 @@ function Login({setJwt, jwt, setUser}) {
                 console.log(data)
                 if(data.token) {
                     setJwt(data.token)
-                    setUser(JSON.parse(Buffer.from(data.token.split(".")[1], "base64").toString()))
+                    setUser({email: data.user.email})
                 }
             })
     }

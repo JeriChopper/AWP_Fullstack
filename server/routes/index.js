@@ -148,7 +148,10 @@ router.post('/login',
       }
 
       // Set the JWT token as a cookie in the response
-      res.json({success: true, token}); 
+      res.cookie('connect.sid', token, { httpOnly: true });
+
+
+      res.json({token, user: {email: user.email}}); 
     }
   );
 });

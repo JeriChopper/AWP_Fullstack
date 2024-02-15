@@ -15,10 +15,13 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <h2>{jwt ? `Welcome ${user.username}!`: ""} </h2>
 
       <Register/>
-      <Login setJwt={setJwt} setUser={setUser} jwt={jwt}/>
 
+      {!user?.id?.length > 0 &&
+        <Login setJwt={setJwt} setUser={setUser} jwt={jwt}/>
+      }
       </div>
     </Router>
     
