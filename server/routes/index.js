@@ -101,7 +101,7 @@ async (req,res) => {
       password: hashedPassword,
     }); // New User is in the database and the password is hashed. 
 
-    return res.redirect('/login'); // after successful registration it now asks to login
+    return res.json('ok'); 
 
 
   } catch (error) { //error handling
@@ -117,10 +117,7 @@ router.get('/login', (req,res,next) => {
 })
 
 
-router.post('/login', [
-  body('email').isLength({ min: 1 }).trim().escape(),
-  body('password').isLength({ min: 1 }),
-],
+router.post('/login',
  async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
