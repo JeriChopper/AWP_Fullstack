@@ -1,6 +1,6 @@
 import{ useState} from 'react'
 
-function Register() {
+function Register({onRegistrationComplete}) {
     const [userData, setUserData] = useState({})
 
     const handleChange = (e) => {
@@ -22,6 +22,10 @@ function Register() {
             .then(response => response.json())
             .then(data=>{
                 console.log(data)
+                if (data.success) {
+
+                    onRegistrationComplete();
+                }
             })
     }
 
