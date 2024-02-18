@@ -41,7 +41,10 @@ function Login({setJwt, jwt, setUser}) {
                     <input type="password" placeholder="Password" name="password"/>
                 </div>
                 <div className='login-button'>
-                    <input type="submit"/>
+                    <input type="submit" name="submit"/>
+                </div>
+                <div className='register-link'>
+                    <p>Don't have an account? <a href=''>Register</a></p>
                 </div>
             </form>
         </div>
