@@ -1,0 +1,10 @@
+/* Gradient source: 
+https://www.youtube.com/watch?v=LMagNcngvcU
+https://angrytools.com/gradient/
+*/
+
+.gradient__bg {
+    /* global 92%+ browsers support */
+    background: radial-gradient(circle at 7% 25%, rgba(238, 130, 238, 1) 0%, rgba(126, 4, 137, 1) 100%);
+}
+  
