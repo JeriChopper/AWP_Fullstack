@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './auth.css';
 
 function Authentication({ setJwt, setUser, initialForm }) {
   const [userData, setUserData] = useState({});
@@ -36,13 +37,13 @@ function Authentication({ setJwt, setUser, initialForm }) {
   };
 
   return (
-    <div>
-      <h2>{isRegisterForm ? 'Register' : 'Login'}</h2>
+    <div className='wrapper'>
       <form onChange={handleChange} onSubmit={submit}>
-        <div>
+        <h2>{isRegisterForm ? 'Register' : 'Login'}</h2>
+        <div className='email-box'>
           <input type="text" placeholder="Email" name="email" />
         </div>
-        <div>
+        <div className='password-box'>
           <input type="password" placeholder="Password" name="password" />
         </div>
         <input type="submit" />
