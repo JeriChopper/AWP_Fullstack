@@ -46,7 +46,9 @@ function Authentication({ setJwt, setUser, initialForm }) {
         <div className='password-box'>
           <input type="password" placeholder="Password" name="password" />
         </div>
-        <input type="submit" />
+        <div className='submit-button'>
+          <button type="submit" name="submit">Submit</button>
+        </div>
         <div className='login-link'>
           <p>{isRegisterForm ? 'Already registered? ' : 'Don\'t have an account? '}
              <button type="button" onClick={switchForm}>

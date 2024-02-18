@@ -1,6 +1,7 @@
 import { useState } from 'react';
 //import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import './App.css';
+import './components/auth.css'
 import Authentication from './components/Authentication';
 
 function App() {

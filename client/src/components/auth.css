@@ -1,4 +1,60 @@
-div.wrapper{
+.wrapper{
     width: 420px;
+    color: white;
+}
 
+
+
+.wrapper h2{
+    font-size: 36px;
+    text-align: center;
+
+
+}
+
+.email-box input{
+    width: 100%;
+    height: 60px;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+}
+
+
+.email-box input::placeholder{
+    text-align: center;
+}
+
+
+
+.password-box input{
+    width: 100%;
+    height: 60px;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    margin-top: 5%;
+    
+
+}
+
+.password-box input::placeholder{
+    text-align: center;
+}
+
+
+
+.submit-button {
+    text-align: center;
+    margin-top: 20px;
+ 
+    
+}
+
+.submit-button button{
+    height: 50px;
+    width: 100%;
+    background-color: transparent; 
+    border-radius: 40px;
+    cursor: pointer;
 }
