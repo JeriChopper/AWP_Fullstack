@@ -1,6 +1,6 @@
 import{ useState} from 'react'
 
-function Register({onRegistrationComplete}) {
+function Register() {
     const [userData, setUserData] = useState({})
 
     const handleChange = (e) => {
@@ -24,7 +24,6 @@ function Register({onRegistrationComplete}) {
                 console.log(data)
                 if (data.success) {
 
-                    onRegistrationComplete();
                 }
             })
     }
@@ -34,8 +33,12 @@ function Register({onRegistrationComplete}) {
         <div>
             <h2>Register</h2>
             <form onChange={handleChange} onSubmit={submit}>
-                <input type="text" name="email"/>
-                <input type="password" name="password"/>
+                <div>
+                    <input type="text" placeholder="Email" name="email"/> 
+                </div>
+                <div>
+                    <input type="password" placeholder="Password" name="password"/>
+                </div>
                 <input type="submit"/>
             </form>
         </div>

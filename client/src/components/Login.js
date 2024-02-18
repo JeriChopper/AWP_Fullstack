@@ -31,12 +31,18 @@ function Login({setJwt, jwt, setUser}) {
 
 
     return (
-        <div>
+        <div className='login-form'>
             <h2>Login</h2>
             <form onChange={handleChange} onSubmit={submit}>
-                <input type="text" name="email"/>
-                <input type="password" name="password"/>
-                <input type="submit"/>
+                <div className='login-email'>
+                    <input type="text" placeholder="Email" name="email"/> 
+                </div>
+                <div className='login-password'>
+                    <input type="password" placeholder="Password" name="password"/>
+                </div>
+                <div className='login-button'>
+                    <input type="submit"/>
+                </div>
             </form>
         </div>
     )
