@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mui/material": "^5.15.10",
     "concurrently": "^8.2.2",
     "cors": "^2.8.5",
     "react-toastify": "^10.0.4"

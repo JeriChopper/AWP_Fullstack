@@ -3,6 +3,7 @@ import { useState } from 'react';
 import './App.css';
 import './components/auth.css'
 import Authentication from './components/Authentication';
+import Header from './components/Header'
 
 function App() {
   const [jwt, setJwt] = useState('');
@@ -10,7 +11,9 @@ function App() {
 
   return (
     <div className="App">
-      {!jwt? <Authentication setJwt={setJwt} setUser={setUser} jwt={jwt} /> : `This is where it starts ${user.email}`}
+      {!jwt? <Authentication setJwt={setJwt} setUser={setUser} jwt={jwt} /> : 
+      `This is where it starts ${user.email}`}
+      <Header/>
     </div>
   );
 }
