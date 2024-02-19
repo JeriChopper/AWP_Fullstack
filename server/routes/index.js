@@ -101,7 +101,7 @@ async (req,res) => {
       password: hashedPassword,
     }); // New User is in the database and the password is hashed. 
 
-    return res.json('ok'); 
+    return res.json('Registration OK'); 
 
 
   } catch (error) { //error handling

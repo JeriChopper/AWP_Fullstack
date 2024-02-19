@@ -10,8 +10,7 @@ function App() {
 
   return (
     <div className="App">
-      {!jwt? <Authentication setJwt={setJwt} setUser={setUser} jwt={jwt} /> : `Your email: ${user.email}!`}
-      <h2>Welcome</h2>
+      {!jwt? <Authentication setJwt={setJwt} setUser={setUser} jwt={jwt} /> : `This is where it starts ${user.email}`}
     </div>
   );
 }
