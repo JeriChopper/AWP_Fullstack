@@ -10,6 +10,6 @@ Installation guidelines:
 
 User Manual:
 
-
+npm install react-toastify
 
 
