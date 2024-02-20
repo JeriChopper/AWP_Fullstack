@@ -17,7 +17,10 @@ function App() {
         <Routes>
           <Route 
             path="/" element={!jwt ? <Authentication setJwt={setJwt} setUser={setUser} jwt={jwt} /> 
-            : `${user.email}`}/>
+            :""}/>
+          <Route 
+            path="/chat" element={!jwt ? <Authentication setJwt={setJwt} setUser={setUser} jwt={jwt} /> 
+            :""}/>  
         </Routes>
       
       </div>
