@@ -167,4 +167,35 @@ router.get('/listx', async (req, res) => {
 });
 
 
+router.post('/like', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const { likedUserId } = req.body;
+  const userId = req.user.id; 
+  try {
+    
+    // Find the user by email 
+    const likedUser = await User.findOne({ email: likedUserId });
+
+    if (!likedUser) {
+      return res.status(404).json({ success: false, message: 'Liked user not found.' });
+    }
+
+    // Update the likedUsers array 
+    await User.findByIdAndUpdate(userId, { $addToSet: { likedUsers: likedUser._id } });
+
+    // Check if there's a match
+    if (likedUser.likedUsers.includes(userId)) {
+      // it's a match
+      await User.findByIdAndUpdate(userId, { $addToSet: { matches: likedUser._id } });
+      await User.findByIdAndUpdate(likedUser._id, { $addToSet: { matches: userId } });
+    }
+
+    res.json({ success: true, message: 'User liked successfully.' });
+  } catch (error) {
+    console.error('Error liking user:', error);
+    res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+});
+
+
+
 module.exports = router;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Home() {
+function Chat() {
   return (
     <div>
       <h1>Chat page for Authorized</h1>
@@ -8,4 +8,4 @@ function Home() {
   )
 }
 
-export default Home
+export default Chat

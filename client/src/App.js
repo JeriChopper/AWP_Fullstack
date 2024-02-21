@@ -38,7 +38,7 @@ function App() {
             :<Chat/>}/>  
           <Route 
             path="/find" element={!jwt ? <Authentication setJwt={setJwt} setUser={setUser} jwt={jwt} /> 
-            :<Find user={user}/>}/>  
+            :<Find user={user} jwt={jwt}/>}/>  
         </Routes>
       
       </div>

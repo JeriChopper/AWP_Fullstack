@@ -8,7 +8,14 @@ import { FaGrinHearts } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import IconButton from '@mui/material/IconButton';
 
-export default function ActionAreaCard({user}) {
+export default function ActionAreaCard({user, onLikeClick}) {
+
+  const handleLikeClick =  () => {
+    onLikeClick(user.email);
+  };
+
+   
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
@@ -19,13 +26,13 @@ export default function ActionAreaCard({user}) {
           <Typography variant="body2" color="text.secondary">
             Etsin kavereita.
           </Typography>
-          <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '8px'}}>
-            <IconButton>
-              <FaGrinHearts style={{ cursor: 'pointer' }}/>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+            <IconButton onClick={handleLikeClick}>
+              <FaGrinHearts style={{ cursor: 'pointer' }} />
             </IconButton>
             <IconButton>
               <ImCross style={{ cursor: 'pointer' }} />
-            </IconButton>  
+            </IconButton>
           </div>
         </CardContent>
       </CardActionArea>
@@ -35,5 +42,4 @@ export default function ActionAreaCard({user}) {
 
 
 /// SOURCE https://mui.com/material-ui/react-card/
-
 /// https://mui.com/material-ui/react-button/
