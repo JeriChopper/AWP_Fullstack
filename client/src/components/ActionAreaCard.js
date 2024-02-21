@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import { FaGrinHearts } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
+import IconButton from '@mui/material/IconButton';
 
 export default function ActionAreaCard({user}) {
   return (
@@ -19,8 +20,12 @@ export default function ActionAreaCard({user}) {
             Etsin kavereita.
           </Typography>
           <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '8px'}}>
-            <FaGrinHearts style={{ cursor: 'pointer' }}/>
-            <ImCross style={{ cursor: 'pointer' }} />
+            <IconButton>
+              <FaGrinHearts style={{ cursor: 'pointer' }}/>
+            </IconButton>
+            <IconButton>
+              <ImCross style={{ cursor: 'pointer' }} />
+            </IconButton>  
           </div>
         </CardContent>
       </CardActionArea>
@@ -30,3 +35,5 @@ export default function ActionAreaCard({user}) {
 
 
 /// SOURCE https://mui.com/material-ui/react-card/
+
+/// https://mui.com/material-ui/react-button/
