@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import './App.css';
@@ -13,11 +14,17 @@ import Find from './pages/Find';
 function App() {
   const [jwt, setJwt] = useState('');
   const [user, setUser] = useState({});
+  const LoggedIn = !!jwt; 
+
+  const logout = () => {
+    setJwt('');
+    setUser({});
+  };
 
   return (
     <Router>
       <div className="App">
-        <Header/>
+        <Header LoggedIn={LoggedIn} onLogout={logout}/>
         <Routes>
           <Route 
             path="/" element={!jwt ? <Intro setJwt={setJwt} setUser={setUser} jwt={jwt} /> 
