@@ -156,4 +156,15 @@ router.post('/login',
   );
 });
 
+router.get('/listx', async (req, res) => {
+  try {
+    const users = await User.find({}, { _id: 0, password: 0 }); // Exclude sensitive information
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
 module.exports = router;
