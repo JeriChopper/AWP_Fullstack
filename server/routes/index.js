@@ -196,6 +196,42 @@ router.post('/like', passport.authenticate('jwt', { session: false }), async (re
   }
 });
 
+router.get('/matches', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const userId = req.user.id;
+  
+  try {
+    // Find the user by ID and populate the 'matches' array
+    const user = await User.findById(userId).populate('matches', 'email'); 
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    // Use a Set to ensure unique matches
+    const uniqueMatches = new Set();
+
+    // Iterate over user's matches 
+    user.matches.forEach((match) => {
+      uniqueMatches.add({
+        id: match._id,
+        email: match.email,
+      });
+    });
+ 
+    // Convert the Set back to an array
+    const matches = Array.from(uniqueMatches);
+
+
+    res.json({ success: true, matches });
+  } catch (error) {
+    console.error('Error fetching matches:', error);
+    res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+});
+
+
+
+
 
 
 module.exports = router;

@@ -1,9 +1,11 @@
-import React from 'react';
+import React from 'react'
+import MatchList from '../components/MatchList'
 
-function Chat() {
+function Chat({jwt}) {
+  console.log('JWT prop in Chat:', jwt);
   return (
     <div>
-      <h1>Chat page for Authorized</h1>
+        <MatchList jwt={jwt}/>
     </div>
   )
 }

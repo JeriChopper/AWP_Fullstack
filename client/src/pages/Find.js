@@ -7,9 +7,12 @@ const Find = ({ user, jwt }) => {
   useEffect(() => {
     // Fetch the list of users
     fetch('/listx', {
+      method: 'GET',
       headers: {
+        'Content-type': 'application/json',
         Authorization: `Bearer ${jwt}`
-      }
+      },
+      mode: 'cors',
     })
       .then(response => response.json())
       .then(data => {
