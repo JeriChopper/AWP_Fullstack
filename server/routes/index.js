@@ -230,8 +230,87 @@ router.get('/matches', passport.authenticate('jwt', { session: false }), async (
 });
 
 
+router.get('/messages/:matchId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const userId = req.user.id;
+  const matchId = req.params.matchId;
 
+  try {
+    // Check if the user has a match with the given ID
+    const user = await User.findById(userId).populate('matches');
+    const match = user.matches.find(match => match.id === matchId);
 
+    if (!match) {
+      return res.status(404).json({ success: false, message: 'Match not found.' });
+    }
+
+    // Find the chat for the given match and populate the messages for both users
+    const chat = await User.findById(userId).populate({
+      path: 'chats',
+      match: { user: match.id },
+      populate: { path: 'messages.sender', select: 'email' }
+    });
+
+    if (!chat || !chat.chats || chat.chats.length === 0) {
+      // Return an empty array of messages if chats is empty or undefined
+      return res.json({ success: true, messages: [] });
+    }
+
+    res.json({ success: true, messages: chat.chats[0].messages });
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+});
+
+router.post('/messages/:matchId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const userId = req.user.id;
+  const matchId = req.params.matchId;
+  const { content } = req.body;
+
+  try {
+    // Check if the user has a match with the given ID
+    const user = await User.findById(userId).populate('matches');
+    const match = user.matches.find(match => match.id === matchId);
+
+    if (!match) {
+      return res.status(404).json({ success: false, message: 'Match not found.' });
+    }
+
+    // Find or create the chat for the given match
+    let chat = await User.findById(userId).populate({
+      path: 'chats',
+      match: { user: match.id },
+    });
+
+    if (!chat || !chat.chats || chat.chats.length === 0) {
+      // Create a new chat for both users
+      chat = await User.findByIdAndUpdate(userId, {
+        $push: { chats: { user: match.id } },
+      }, { new: true }).populate({
+        path: 'chats',
+        match: { user: match.id },
+      });
+
+      // Update the chat for the other user as well
+      await User.findByIdAndUpdate(match.id, {
+        $push: { chats: { user: userId } },
+      });
+    }
+
+    // Add the new message to the chat for both users
+    chat.chats[0].messages.push({
+      sender: userId,
+      content,
+    });
+
+    await chat.save();
+
+    res.json({ success: true, message: chat.chats[0].messages[chat.chats[0].messages.length - 1] });
+  } catch (error) {
+    console.error('Error sending message:', error);
+    res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+});
 
 
 module.exports = router;

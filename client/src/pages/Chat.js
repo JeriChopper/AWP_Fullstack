@@ -1,13 +1,22 @@
-import React from 'react'
-import MatchList from '../components/MatchList'
+import React, { useState } from 'react';
+import MatchList from '../components/MatchList';
+import ChatInterface from '../components/ChatInteraction';
 
-function Chat({jwt}) {
-  console.log('JWT prop in Chat:', jwt);
+function Chat({ jwt }) {
+  const [selectedMatch, setSelectedMatch] = useState(null);
+
+  const handleMatchSelect = (match) => {
+    setSelectedMatch(match);
+  };
+
   return (
-    <div>
-        <MatchList jwt={jwt}/>
+    <div className='chat-container'>
+      <MatchList jwt={jwt} onSelectMatch={handleMatchSelect} />
+      <div className='chat-interface-container'>
+        {selectedMatch && <ChatInterface match={selectedMatch} jwt={jwt} />}
+      </div>
     </div>
-  )
+  );
 }
 
-export default Chat
+export default Chat;

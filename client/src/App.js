@@ -9,7 +9,6 @@ import Home from './pages/Home';
 import Intro from './pages/Intro';
 import Chat from './pages/Chat';
 import Find from './pages/Find';
-import MatchList from './components/MatchList';
 
 
 function App() {
@@ -38,7 +37,6 @@ function App() {
             path="/chat" element={!jwt ? (<Authentication setJwt={setJwt} setUser={setUser} jwt={jwt} />) : (
                 <>
                   <Chat jwt={jwt}/>
-                  <MatchList jwt={jwt} />
                 </>)}/>
           <Route 
             path="/find" element={!jwt ? <Authentication setJwt={setJwt} setUser={setUser} jwt={jwt} /> 

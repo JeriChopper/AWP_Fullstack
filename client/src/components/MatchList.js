@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Card, CardContent, List, ListItem, Typography } from '@mui/material';
 
-const MatchList = ({jwt}) => {
+const MatchList = ({jwt, onSelectMatch}) => {
   const [matches, setMatches] = useState([]);
+  const [selectedMatch, setSelectedMatch] = useState(null);
 
   useEffect(() => {
     // Fetch the matches
@@ -23,15 +25,33 @@ const MatchList = ({jwt}) => {
       .catch(error => console.error('Error fetching matches:', error));
   }, [jwt]); // Trigger the effect when the jwt changes
 
+
+  const handleMatchSelect = (match) => {
+    setSelectedMatch(match);
+    if (onSelectMatch) {
+      onSelectMatch(match);
+    }
+  };
+
   return (
-    <div>
-      <ul>
-        {matches.map((match) => (
-          <li key={match.id}>{match.email}</li>
-        ))}
-      </ul>
-    </div>
+    <Card style={{ maxWidth: 500, marginRight: 200 }}>
+      <CardContent>
+        <Typography variant="h6">Matches</Typography>
+        <List>
+          {matches.map((match) => (
+            <ListItem key={match.id} onClick={() => handleMatchSelect(match)} button>
+              <Card>
+                <CardContent>
+                  <Typography variant="body1">{match.email}</Typography>
+                </CardContent>
+              </Card>
+            </ListItem>
+          ))}
+        </List>
+      </CardContent>
+    </Card>
   );
 };
+
 
 export default MatchList;
