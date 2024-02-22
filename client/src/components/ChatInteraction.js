@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Card, CardContent, Typography, TextField, Button } from '@mui/material';
 
 const ChatInteraction = ({ match, jwt }) => {
   const [messages, setMessages] = useState([]);
@@ -8,7 +9,7 @@ const ChatInteraction = ({ match, jwt }) => {
     const fetchMessages = async () => {
       if (match) {
         try {
-          const response = await fetch(`/messages/${match.id}`, {
+          const response = await fetch(`/messages/${match.id}/all`, {
             method: 'GET',
             headers: {
               Authorization: `Bearer ${jwt}`,
@@ -45,8 +46,8 @@ const ChatInteraction = ({ match, jwt }) => {
 
         const data = await response.json();
         if (data.success) {
-          setMessages([...messages, data.message]);
-          setNewMessage('');
+            setMessages([...messages, data.messages]);
+            setNewMessage('');
         } else {
           console.error('Failed to send message:', data.message);
         }
@@ -60,20 +61,29 @@ const ChatInteraction = ({ match, jwt }) => {
     <div>
       <div>
         {messages.map((message) => (
-          <div key={message.id}>
-            <p>{message.content}</p>
-            <p>{message.timestamp}</p>
+          <div key={message.id} style={{ marginBottom: '10px' }}>
+            <Typography variant="caption">{message.sender.email}:</Typography>
+            <Typography variant="body1">{message.content}</Typography>
+            <Typography variant="caption">
+              {new Date(message.timestamp).toLocaleString()}
+            </Typography>
           </div>
         ))}
       </div>
-      <input
+      <TextField
         type="text"
         value={newMessage}
         onChange={(e) => setNewMessage(e.target.value)}
+        variant="outlined"
+        fullWidth
+        label="Type a message"
       />
-      <button onClick={handleSendMessage}>Send Message</button>
+      <Button variant="contained" color="primary" onClick={handleSendMessage}>
+        Send Message
+      </Button>
     </div>
   );
 };
+
 
 export default ChatInteraction;

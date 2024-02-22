@@ -139,7 +139,7 @@ router.post('/login',
     jwtPayload,
     process.env.SECRET || 'defaultSecret',
     {
-      expiresIn: 360,
+      expiresIn: 3600,
     },
     (err, token) => {
       if (err) {
@@ -230,32 +230,49 @@ router.get('/matches', passport.authenticate('jwt', { session: false }), async (
 });
 
 
-router.get('/messages/:matchId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.get('/messages/:matchId/all', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const userId = req.user.id;
   const matchId = req.params.matchId;
 
   try {
-    // Check if the user has a match with the given ID
-    const user = await User.findById(userId).populate('matches');
-    const match = user.matches.find(match => match.id === matchId);
+    const userChats = await User.findById(userId)
+      .select('chats')
+      .populate([
+        {
+          path: 'chats',
+          match: { user: matchId },
+          populate: { path: 'messages.sender', select: 'email' }
+        },
+        {
+          path: 'chats.user',
+          select: 'email'
+        }
+      ]);
 
-    if (!match) {
-      return res.status(404).json({ success: false, message: 'Match not found.' });
-    }
+    const matchChats = await User.findById(matchId)
+      .select('chats')
+      .populate([
+        {
+          path: 'chats',
+          match: { user: userId },
+          populate: { path: 'messages.sender', select: 'email' }
+        },
+        {
+          path: 'chats.user',
+          select: 'email'
+        }
+      ]);
 
-    // Find the chat for the given match and populate the messages for both users
-    const chat = await User.findById(userId).populate({
-      path: 'chats',
-      match: { user: match.id },
-      populate: { path: 'messages.sender', select: 'email' }
-    });
+    const userChatWithMessages = userChats.chats.find(c => c.user.id === matchId);
+    const matchChatWithMessages = matchChats.chats.find(c => c.user.id === userId);
 
-    if (!chat || !chat.chats || chat.chats.length === 0) {
-      // Return an empty array of messages if chats is empty or undefined
-      return res.json({ success: true, messages: [] });
-    }
+    // Ensure that messages is defined, otherwise return an empty array
+    const userMessages = userChatWithMessages?.messages || [];
+    const matchMessages = matchChatWithMessages?.messages || [];
 
-    res.json({ success: true, messages: chat.chats[0].messages });
+    const messages = userMessages.concat(matchMessages);
+
+    res.json({ success: true, messages });
   } catch (error) {
     console.error('Error fetching messages:', error);
     res.status(500).json({ success: false, message: 'Internal server error.' });

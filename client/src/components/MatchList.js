@@ -33,8 +33,9 @@ const MatchList = ({jwt, onSelectMatch}) => {
     }
   };
 
-  return (
-    <Card style={{ maxWidth: 500, marginRight: 200 }}>
+
+return (
+    <Card style={{ maxWidth: 500, position: 'fixed', top: 70, left: 0}}>
       <CardContent>
         <Typography variant="h6">Matches</Typography>
         <List>
@@ -51,7 +52,7 @@ const MatchList = ({jwt, onSelectMatch}) => {
       </CardContent>
     </Card>
   );
-};
+}
 
 
 export default MatchList;
