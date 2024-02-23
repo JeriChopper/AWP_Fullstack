@@ -50,7 +50,7 @@ const ChatInteraction = ({ match, jwt }) => {
 
         const data = await response.json();
         if (data.success) {
-            setMessages([...messages, data.messages]);
+            setMessages([...messages, ...data.messages]);
             setNewMessage('');
         } else {
           console.error('Failed to send message:', data.message);

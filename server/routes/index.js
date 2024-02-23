@@ -326,7 +326,7 @@ router.post('/messages/:matchId', passport.authenticate('jwt', { session: false 
 
     await chat.save();
 
-    res.json({ success: true, message: chat.chats[0].messages[chat.chats[0].messages.length - 1] });
+    res.json({ success: true, message: chat.chats[0].messages});
   } catch (error) {
     console.error('Error sending message:', error);
     res.status(500).json({ success: false, message: 'Internal server error.' });
