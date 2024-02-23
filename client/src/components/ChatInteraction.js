@@ -54,15 +54,16 @@ const ChatInteraction = ({ match, jwt, userId }) => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${jwt}`,
           },
-          body: JSON.stringify({ content: newMessage, sender: userId }), // took sender as a value for possible chat manipulation
+          body: JSON.stringify({ content: newMessage }), // took sender as a value for possible chat manipulation
         });
 
         const data = await response.json();
         if (data.success) {
-            setMessages([...messages, ...data.messages]); // Update with the sent message
+            console.log('Received messages:', data.message);
+            setMessages([...messages, ...data.message]); // Update with the sent message
             setNewMessage('');
         } else {
-          console.error('Failed to send message:', data.message);
+          console.error('Failed to send message:', data.messages);
         }
       } catch (error) {
         console.error('Error sending message:', error);
@@ -77,8 +78,8 @@ const ChatInteraction = ({ match, jwt, userId }) => {
   return (
     <div>
       <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
-        {messages.map((message) => (
-          <div key={message.id} style={{ marginBottom: '10px' }}>
+        {messages.map((message, index) => (
+          <div key={index} style={{ marginBottom: '10px' }}>
             <Typography variant="caption">{message.sender.email}:</Typography>
             <Typography variant="body1">{message.content}</Typography>
             <Typography variant="caption">

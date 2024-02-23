@@ -12,7 +12,7 @@ import { Card, CardContent, List, ListItem, Typography } from '@mui/material';
 
 const MatchList = ({jwt, onSelectMatch}) => { /// use jwt as prop. onSelectMatch is prop from ActionAreaCard
   const [matches, setMatches] = useState([]); // Matces array
-  const [setSelectedMatch] = useState(null);
+  const [selectMatch, setSelectedMatch] = useState(null);
 
   useEffect(() => {
     // Fetch the matches
