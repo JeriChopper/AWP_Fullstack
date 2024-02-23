@@ -7,6 +7,9 @@ const Schema = mongoose.Schema;
 let userSchema = new Schema ({
     email: {type: String},
     password: {type: String},
+    displayName: { type: String }, //profile data
+    bio: { type: String }, //profile data
+    gender: { type: String, enum: ['male', 'female', 'other'] }, //profile data
     likedUsers: [{ type: Schema.Types.ObjectId, ref: 'users' }], 
     matches: [{ type: Schema.Types.ObjectId, ref: 'users' }], 
     chats: [{

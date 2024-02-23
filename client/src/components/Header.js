@@ -35,6 +35,13 @@ const Header = ({LoggedIn, onLogout}) => {
         }}>
           FIND
         </Button>
+        <Button component={Link} to="/profile" sx={{
+          backgroundColor: 'white',
+          marginRight: '20px',
+          color: "inherit"
+        }}>
+          Profile
+        </Button>
         {LoggedIn && (
           <Button onClick={onLogout} sx={{
             backgroundColor: 'white',

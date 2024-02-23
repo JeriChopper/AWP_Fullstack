@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import Intro from './pages/Intro';
 import Chat from './pages/Chat';
 import Find from './pages/Find';
+import Profile from './pages/Profile';
 
 
 function App() {
@@ -41,6 +42,9 @@ function App() {
           <Route 
             path="/find" element={!jwt ? <Authentication setJwt={setJwt} setUser={setUser} jwt={jwt} /> 
             :<Find user={user} jwt={jwt}/>}/>  
+          <Route 
+            path="/profile" element={!jwt ? <Intro setJwt={setJwt} setUser={setUser} jwt={jwt} /> 
+            :<Profile jwt={jwt}/>}></Route>
         </Routes>
       
       </div>

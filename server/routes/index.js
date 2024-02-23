@@ -56,7 +56,6 @@ passport.use(
 );
 
 
-
 /* Routes */
 
 //index route to the main page. 
@@ -284,6 +283,11 @@ router.post('/messages/:matchId', passport.authenticate('jwt', { session: false 
   const matchId = req.params.matchId;
   const { content } = req.body;
 
+
+  console.log('UserId:', req.user.id);
+  console.log('MatchId:', req.params.matchId);
+  console.log('Content:', req.body.content);
+
   try {
     // Check if the user has a match with the given ID
     const user = await User.findById(userId).populate('matches');
@@ -325,6 +329,23 @@ router.post('/messages/:matchId', passport.authenticate('jwt', { session: false 
     res.json({ success: true, message: chat.chats[0].messages[chat.chats[0].messages.length - 1] });
   } catch (error) {
     console.error('Error sending message:', error);
+    res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+});
+
+
+///Post route to put profile data in the mongodb
+router.put('/profile', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const userId = req.user.id;
+  const { displayName, bio, gender } = req.body;
+
+  try {
+    // Update user profile fields
+    await User.findByIdAndUpdate(userId, { displayName, bio, gender });
+
+    res.json({ success: true, message: 'Profile updated successfully.' });
+  } catch (error) {
+    console.error('Error updating profile:', error);
     res.status(500).json({ success: false, message: 'Internal server error.' });
   }
 });

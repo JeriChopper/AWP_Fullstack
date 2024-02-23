@@ -17,16 +17,19 @@ export default function ActionAreaCard({user, onLikeClick}) {
    
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, margin: '16px' }}>
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {user.email}
+            {user.displayName || user.email}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Etsin kavereita.
+            {user.bio || 'Looking to chat'}
           </Typography>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+          <Typography variant="body2" color="text.secondary" style={{ marginTop: '8px' }}>
+            {user.gender || 'Gender not specified'}
+          </Typography>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px' }}>
             <IconButton onClick={handleLikeClick}>
               <FaGrinHearts style={{ cursor: 'pointer' }} />
             </IconButton>

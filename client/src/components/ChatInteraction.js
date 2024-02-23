@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, Typography, TextField, Button } from '@mui/material';
+import {Typography, TextField, Button } from '@mui/material';
 
 const ChatInteraction = ({ match, jwt }) => {
   const [messages, setMessages] = useState([]);
@@ -33,6 +33,10 @@ const ChatInteraction = ({ match, jwt }) => {
   }, [match, jwt]);
 
   const handleSendMessage = async () => {
+
+    console.log('UserId:', match.id);
+    console.log('Match:', match);
+    console.log('New Message:', newMessage);
     if (match && newMessage.trim() !== '') {
       try {
         const response = await fetch(`/messages/${match.id}`, {
