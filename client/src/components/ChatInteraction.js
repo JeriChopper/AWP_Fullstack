@@ -1,9 +1,22 @@
+/// Jericho Koskinen
+/// 0607024
+/// Project started 14.2.2024
+/// Sources and references will be linked near the code
+
+
+
+/// Imports and dependencies
 import React, { useState, useEffect } from 'react';
 import {Typography, TextField, Button } from '@mui/material';
 
-const ChatInteraction = ({ match, jwt }) => {
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
+
+/// Chatinteraction component. Point is to make Frontend implementation for the Chat logic as a component to ease the code on the page side. 
+/// Inspiration to make chatInteraction work: https://www.youtube.com/watch?v=otaQKODEUFs
+
+
+const ChatInteraction = ({ match, jwt, userId }) => {
+  const [messages, setMessages] = useState([]); /// Array where all messages are and will be set
+  const [newMessage, setNewMessage] = useState(''); /// Takes input as a string 
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -19,7 +32,7 @@ const ChatInteraction = ({ match, jwt }) => {
 
           const data = await response.json();
           if (data.success) {
-            setMessages(data.messages || []);
+            setMessages(data.messages || []); /// if data.messages is empty, put empty array.
           } else {
             console.error('Failed to fetch messages:', data.message);
           }
@@ -29,15 +42,11 @@ const ChatInteraction = ({ match, jwt }) => {
       }
     };
 
-    fetchMessages();
-  }, [match, jwt]);
+    fetchMessages(); // Fetches messages until there are not any new to fetch. 
+  }, [match, jwt]); /// trigger again if jwt or match changes
 
   const handleSendMessage = async () => {
-
-    console.log('UserId:', match.id);
-    console.log('Match:', match);
-    console.log('New Message:', newMessage);
-    if (match && newMessage.trim() !== '') {
+    if (match && newMessage.trim() !== '') { /// exclude empty whitespace etc
       try {
         const response = await fetch(`/messages/${match.id}`, {
           method: 'POST',
@@ -45,12 +54,12 @@ const ChatInteraction = ({ match, jwt }) => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${jwt}`,
           },
-          body: JSON.stringify({ content: newMessage }),
+          body: JSON.stringify({ content: newMessage, sender: userId }), // took sender as a value for possible chat manipulation
         });
 
         const data = await response.json();
         if (data.success) {
-            setMessages([...messages, ...data.messages]);
+            setMessages([...messages, ...data.messages]); // Update with the sent message
             setNewMessage('');
         } else {
           console.error('Failed to send message:', data.message);
@@ -61,9 +70,13 @@ const ChatInteraction = ({ match, jwt }) => {
     }
   };
 
+
+  /// Return renders the chat interface with message history and input box
+
+
   return (
     <div>
-      <div>
+      <div style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
         {messages.map((message) => (
           <div key={message.id} style={{ marginBottom: '10px' }}>
             <Typography variant="caption">{message.sender.email}:</Typography>
@@ -74,20 +87,21 @@ const ChatInteraction = ({ match, jwt }) => {
           </div>
         ))}
       </div>
-      <TextField
-        type="text"
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-        variant="outlined"
-        fullWidth
-        label="Type a message"
-      />
-      <Button variant="contained" color="primary" onClick={handleSendMessage}>
-        Send Message
-      </Button>
+      <div style={{ marginTop: '10px' }}>
+        <TextField
+          type="text"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          variant="outlined"
+          fullWidth
+          label="Type a message"
+        />
+        <Button variant="contained" color="primary" onClick={handleSendMessage} style={{ marginTop: '10px' }}>
+          Send Message
+        </Button>
+      </div>
     </div>
   );
-};
-
+}
 
 export default ChatInteraction;

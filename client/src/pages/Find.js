@@ -1,8 +1,17 @@
+/// Jericho Koskinen
+/// 0607024
+/// Project started 14.2.2024
+/// Sources and references will be linked near the code
+
+
+/// Imports and Dependencies (ActionAreaCard.js Component)
 import React, { useState, useEffect } from 'react';
 import ActionAreaCard from '../components/ActionAreaCard';
 
+
+/// Find function takes user and jwt as prop from App.js to filter data and verify authorization. 
 const Find = ({ user, jwt }) => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]); // useState array for listing all the users.
 
   useEffect(() => {
     // Fetch the list of users
@@ -16,13 +25,14 @@ const Find = ({ user, jwt }) => {
     })
       .then(response => response.json())
       .then(data => {
-        const filteredUsers = data.filter(u => u.email !== user.email);
+        const filteredUsers = data.filter(u => u.email !== user.email); /// Excludes itself. 
         setUsers(filteredUsers);
       })
       .catch(error => console.error('Error fetching users:', error));
-  }, [user, jwt]); // Trigger the effect when the user or jwt changes
+  }, [user, jwt]); // Triggers again if user or jwt changes
 
   
+  // handleLikeClick handles the front end logic of the like button.
   const handleLikeClick = async (likedUserId) => {
     try {
       const response = await fetch('/like', {

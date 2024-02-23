@@ -1,8 +1,27 @@
+/// Jericho Koskinen
+/// 0607024
+/// Project started 14.2.2024
+/// Sources and references will be linked near the code
+
+
+
+///Imports and Dependencies
 import React from 'react';
 import { AppBar, Toolbar, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
+
+//Header component. Takes loggedIn and onLogout as a prop from App.js 
 const Header = ({LoggedIn, onLogout}) => {
+
+
+  /// Returns app bar with buttons which all redirect to right content if authorization is correct.
+
+  
+
+  /// Logout button is conditionally rendered
+
+  /// Logout button functionality inspired from: https://www.youtube.com/watch?v=VlklL6TPlpw
 
   return (
     <AppBar sx={{

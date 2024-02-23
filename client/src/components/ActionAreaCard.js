@@ -1,19 +1,29 @@
+/// Jericho Koskinen
+/// 0607024
+/// Project started 14.2.2024
+/// Sources and references will be linked near the code
+
+
+
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-//import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import { FaGrinHearts } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import IconButton from '@mui/material/IconButton';
 
-export default function ActionAreaCard({user, onLikeClick}) {
+export default function ActionAreaCard({user, onLikeClick}) { // take user and onLikeClick as a prop from Find page
 
   const handleLikeClick =  () => {
     onLikeClick(user.email);
-  };
+  }; /// triggers the Like button click 
 
+
+
+  /// SOURCE https://mui.com/material-ui/react-card/
+  /// https://mui.com/material-ui/react-button/
    
 
   return (
@@ -44,5 +54,3 @@ export default function ActionAreaCard({user, onLikeClick}) {
 }
 
 
-/// SOURCE https://mui.com/material-ui/react-card/
-/// https://mui.com/material-ui/react-button/

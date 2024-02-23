@@ -2,9 +2,8 @@
 /// 0607024
 /// Project started 14.2.2024
 /// Sources and references will be linked near the code
-/// This code is done by me all the way through out. I am using old exercises from the course for the structure of this project
 
-
+/// All of the required dependencies
 var express = require('express');
 const { validationResult, body } = require('express-validator');
 var router = express.Router();
@@ -16,10 +15,6 @@ const passportJWT = require('passport-jwt');
 const JwtStrategy = passportJWT.Strategy;
 const ExtractJwt = passportJWT.ExtractJwt;
 const User = require('../models/User');
-//const Todo = require('../models/Todo');
-//const multer = require("multer");
-//const storage= multer.memoryStorage();
-//const upload = multer({storage});
 
 
 
@@ -34,11 +29,13 @@ db.once('open', () => {
 });
 
 
+/// Initialize JWT
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.SECRET || 'defaultSecret',
 };
 
+// Passport jwt strategy
 passport.use(
   new JwtStrategy(jwtOptions, async (jwtPayload, done) => {
     try {
@@ -58,20 +55,6 @@ passport.use(
 
 /* Routes */
 
-//index route to the main page. 
-router.get('/', function(req, res, next) {
-  res.render('index');
-});
-
-router.get('/about', function(req, res, next) {
-  res.render('about');
-});
-
-
-/// Register get route to render registration page.
-router.get('/register', (req,res,next) => {
-  res.render('register');
-})
 
 
 //Post route to register page to post registration information. 
@@ -110,12 +93,7 @@ async (req,res) => {
 });
 
 
-/// Register get route to render registration page.
-router.get('/login', (req,res,next) => {
-  res.render('login');
-})
-
-
+//Login post route to make sure login has right credentials and creates jwt
 router.post('/login',
  async (req, res) => {
   const errors = validationResult(req);
@@ -129,6 +107,7 @@ router.post('/login',
     return res.status(401).json({ message: 'Wrong password' });
   }
 
+  // create jwtpayload
   const jwtPayload = {
     id: user.id,
     email: user.email,
@@ -146,18 +125,20 @@ router.post('/login',
         return res.status(500).send('Internal Server Error');
       }
 
-      // Set the JWT token as a cookie in the response
+      // Jwt stored as a cookie
       res.cookie('connect.sid', token, { httpOnly: true });
 
-
+      //pass the user/email for further use. 
       res.json({token, user: {email: user.email}}); 
     }
   );
 });
 
+
+//Listx route made to get all of the registered users in the database
 router.get('/listx', async (req, res) => {
   try {
-    const users = await User.find({}, { _id: 0, password: 0 }); // Exclude sensitive information
+    const users = await User.find({}, { _id: 0, password: 0 }); 
     res.json(users);
   } catch (error) {
     console.error(error);
@@ -166,8 +147,10 @@ router.get('/listx', async (req, res) => {
 });
 
 
+
+/// Like post route made for pressing like button in Find page on the client side
 router.post('/like', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  const { likedUserId } = req.body;
+  const { likedUserId } = req.body; //
   const userId = req.user.id; 
   try {
     
@@ -183,7 +166,7 @@ router.post('/like', passport.authenticate('jwt', { session: false }), async (re
 
     // Check if there's a match
     if (likedUser.likedUsers.includes(userId)) {
-      // it's a match
+      // Match!
       await User.findByIdAndUpdate(userId, { $addToSet: { matches: likedUser._id } });
       await User.findByIdAndUpdate(likedUser._id, { $addToSet: { matches: userId } });
     }
@@ -195,6 +178,8 @@ router.post('/like', passport.authenticate('jwt', { session: false }), async (re
   }
 });
 
+
+// Matches get route to get all of the matches from the db
 router.get('/matches', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const userId = req.user.id;
   
@@ -221,7 +206,7 @@ router.get('/matches', passport.authenticate('jwt', { session: false }), async (
     const matches = Array.from(uniqueMatches);
 
 
-    res.json({ success: true, matches });
+    res.json({ success: true, matches }); // HttpHeader the match 
   } catch (error) {
     console.error('Error fetching matches:', error);
     res.status(500).json({ success: false, message: 'Internal server error.' });
@@ -229,8 +214,9 @@ router.get('/matches', passport.authenticate('jwt', { session: false }), async (
 });
 
 
+///Route to receive all posted messages based on matchId (they are opposite for matched users)
 router.get('/messages/:matchId/all', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  const userId = req.user.id;
+  const userId = req.user.id; 
   const matchId = req.params.matchId;
 
   try {
@@ -246,7 +232,7 @@ router.get('/messages/:matchId/all', passport.authenticate('jwt', { session: fal
           path: 'chats.user',
           select: 'email'
         }
-      ]);
+      ]); /// Userchats populates all of the messages it has sent 
 
     const matchChats = await User.findById(matchId)
       .select('chats')
@@ -260,10 +246,10 @@ router.get('/messages/:matchId/all', passport.authenticate('jwt', { session: fal
           path: 'chats.user',
           select: 'email'
         }
-      ]);
+      ]); /// Matchchats populates all of the messages it has sent
 
-    const userChatWithMessages = userChats.chats.find(c => c.user.id === matchId);
-    const matchChatWithMessages = matchChats.chats.find(c => c.user.id === userId);
+    const userChatWithMessages = userChats.chats.find(c => c.user.id === matchId); /// Filter the ones where ID's match
+    const matchChatWithMessages = matchChats.chats.find(c => c.user.id === userId);/// Filter the ones where ID's match
 
     // Ensure that messages is defined, otherwise return an empty array
     const userMessages = userChatWithMessages?.messages || [];
@@ -278,15 +264,13 @@ router.get('/messages/:matchId/all', passport.authenticate('jwt', { session: fal
   }
 });
 
+
+// Post route to post messages. Each user posts their messages in their own route, based on their matchID
 router.post('/messages/:matchId', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const userId = req.user.id;
   const matchId = req.params.matchId;
-  const { content } = req.body;
+  const { content, sender } = req.body;
 
-
-  console.log('UserId:', req.user.id);
-  console.log('MatchId:', req.params.matchId);
-  console.log('Content:', req.body.content);
 
   try {
     // Check if the user has a match with the given ID
@@ -320,7 +304,7 @@ router.post('/messages/:matchId', passport.authenticate('jwt', { session: false 
 
     // Add the new message to the chat for both users
     chat.chats[0].messages.push({
-      sender: userId,
+      sender: sender || userId,
       content,
     });
 
@@ -334,10 +318,10 @@ router.post('/messages/:matchId', passport.authenticate('jwt', { session: false 
 });
 
 
-///Post route to put profile data in the mongodb
+///Post route to put profile data in the db
 router.put('/profile', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const userId = req.user.id;
-  const { displayName, bio, gender } = req.body;
+  const { displayName, bio, gender } = req.body; ///Profile data
 
   try {
     // Update user profile fields

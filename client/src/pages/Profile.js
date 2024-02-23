@@ -1,4 +1,11 @@
+/// Jericho Koskinen
+/// 0607024
+/// Project started 14.2.2024
+/// Sources and references will be linked near the code
+
 // Profile.js
+
+/// Imports and dependencies
 import React, { useState } from 'react';
 import {
   TextField,
@@ -9,27 +16,34 @@ import {
   Container,
   FormControl,
   InputLabel,
-} from '@mui/material';
+} from '@mui/material'
 
+
+
+/// function for profile
 function Profile({jwt}) {
+
+  /// Three useStates for each value (defined in the User Schema in the backend)
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
   const [gender, setGender] = useState('');
 
+  /// Create event
   const handleDisplayNameChange = (event) => setDisplayName(event.target.value);
   const handleBioChange = (event) => setBio(event.target.value);
   const handleGenderChange = (event) => setGender(event.target.value);
 
+
   const handleSave = async () => {
     try {
-      //Put request to insert values from Page to User Schema
+      //Put request to insert values from Profile Page to User Schema
       const response = await fetch('/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${jwt}`,
         },
-        body: JSON.stringify({ // add values to the body.
+        body: JSON.stringify({ // Add values to the body.
           displayName,
           bio,
           gender,
@@ -47,6 +61,9 @@ function Profile({jwt}) {
         console.log('Error updating profile');
     }
   };
+
+
+  /// Returns Displayname Bio and Gender in a Container
 
   return (
     <Container maxWidth="sm">
@@ -86,7 +103,7 @@ function Profile({jwt}) {
           variant="contained"
           color="primary"
           fullWidth
-          style={{ marginTop: 16, color: 'white'}}
+          style={{ marginTop: 16}}
           onClick={handleSave}
         >
           Save

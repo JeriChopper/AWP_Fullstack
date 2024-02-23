@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, List, ListItem, Typography } from '@mui/material';
+/// Jericho Koskinen
+/// 0607024
+/// Project started 14.2.2024
+/// Sources and references will be linked near the code
 
-const MatchList = ({jwt, onSelectMatch}) => {
-  const [matches, setMatches] = useState([]);
-  const [selectedMatch, setSelectedMatch] = useState(null);
+
+
+
+// Imports and dependencies
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, List, ListItem, Typography } from '@mui/material'; 
+
+const MatchList = ({jwt, onSelectMatch}) => { /// use jwt as prop. onSelectMatch is prop from ActionAreaCard
+  const [matches, setMatches] = useState([]); // Matces array
+  const [setSelectedMatch] = useState(null);
 
   useEffect(() => {
     // Fetch the matches
@@ -17,7 +26,7 @@ const MatchList = ({jwt, onSelectMatch}) => {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-            setMatches(data.matches);
+            setMatches(data.matches); //put the matches in the array. 
         } else {
           console.error('Failed to fetch matches:', data.message);
         }
@@ -26,6 +35,8 @@ const MatchList = ({jwt, onSelectMatch}) => {
   }, [jwt]); // Trigger the effect when the jwt changes
 
 
+
+  /// Logic to highlight specific match and the data behind it
   const handleMatchSelect = (match) => {
     setSelectedMatch(match);
     if (onSelectMatch) {
@@ -34,6 +45,8 @@ const MatchList = ({jwt, onSelectMatch}) => {
   };
 
 
+
+  ///Returns a Card with mapped matched users based on their email 
 return (
     <Card style={{ maxWidth: 500, position: 'fixed', top: 70, left: 0}}>
       <CardContent>

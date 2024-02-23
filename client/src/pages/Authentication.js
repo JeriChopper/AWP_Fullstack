@@ -1,9 +1,22 @@
+/// Jericho Koskinen
+/// 0607024
+/// Project started 14.2.2024
+/// Sources and references will be linked near the code
+
+
+
+///Imports and dependencies
 import { useState } from 'react';
 import './auth.css';
 
-function Authentication({ setJwt, setUser, initialForm }) {
+/// This is where I started the front end. Decided to make a responsive register/login forum instead of two seperate pages. 
+
+/// https://www.youtube.com/watch?v=kghwFYOJiNg Inspiration from the Authorization form took from here. Especially Interface wise.
+/// https://www.youtube.com/watch?v=F53MPHqOmYI Used in the front end code as a guide
+
+function Authentication({ setJwt, setUser }) {
   const [userData, setUserData] = useState({});
-  const [isRegisterForm, setIsRegisterForm] = useState(initialForm === 'register');
+  const [isRegisterForm, setIsRegisterForm] = useState(false);
 
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -12,7 +25,7 @@ function Authentication({ setJwt, setUser, initialForm }) {
   const submit = (e) => {
     e.preventDefault();
   
-    const endpoint = isRegisterForm ? '/register' : '/login';
+    const endpoint = isRegisterForm ? '/register' : '/login'; // used endpoint as I do not need to have any logic in the frontend, only fetch the data. 
   
     fetch(endpoint, {
       method: 'POST',
@@ -32,8 +45,8 @@ function Authentication({ setJwt, setUser, initialForm }) {
       .then((data) => {
         console.log(data);
         if (data.token) {
-          setJwt(data.token);
-          setUser({ email: data.user.email });
+          setJwt(data.token); // setJwt to jwt
+          setUser({ email: data.user.email }); // setUser to registered email
         }
       })
       .catch((error) => {
